@@ -1,6 +1,9 @@
+//  Import 'http' package and app.js
 const http = require('http')
 const app = require('./app')
 
+
+//  Return a valid port
 const normalizePort = val => {
   const port = parseInt(val, 10)
 
@@ -13,6 +16,8 @@ const normalizePort = val => {
   return false
 }
 
+
+//  Set port 
 const port = normalizePort(process.env.PORT || '3000')
 app.set('port', port)
 
@@ -34,9 +39,12 @@ const errorHandler = error => {
     default:
       throw error
   }
-};
+}
 
+
+//  Create server
 const server = http.createServer(app)
+
 
 server.on('error', errorHandler)
 server.on('listening', () => {
@@ -44,5 +52,6 @@ server.on('listening', () => {
   const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port
   console.log('Listening on ' + bind)
 })
+
 
 server.listen(port)

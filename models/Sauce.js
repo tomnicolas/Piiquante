@@ -1,5 +1,8 @@
+//  Import 'mongoose'
 const mongoose = require('mongoose')
 
+
+//  Set a schema for sauces datas
 const sauceSchema = mongoose.Schema({
     userId: { type: String, required: true },
     name: { type: String, required: true },
@@ -8,10 +11,12 @@ const sauceSchema = mongoose.Schema({
     mainPepper: { type: String, required: true },
     imageUrl: { type: String, required: true },
     heat: { type: Number, required: true },
-    likes: { type: Number, required: true },
-    dislikes: { type: Number, required: true },
-    usersLiked: [{ type: String, required: true, default: [] }],
-    usersDisliked: [{ type: String, required: true, default: [] }],
+    likes: { type: Number },
+    dislikes: { type: Number },
+    usersLiked: [{ type: String, default: [] }],
+    usersDisliked: [{ type: String, default: [] }],
 })
 
-module.exports = mongoose.model('Sauce', sauceSchema);
+
+//  Export the sauces model
+module.exports = mongoose.model('Sauce', sauceSchema)

@@ -1,23 +1,38 @@
+//  Import 'bcrypt' and 'jsonwebtoken' packages
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
+
+//  Import the user model
 const User = require('../models/User')
 
+
+//  Signup a new user
+//      use bcrypt to hash the password
+//      set users datas (email, hash)
+//      save user in database
+//      catch errors
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
         const user = new User({
             email: req.body.email,
             password: hash
-        });
+        })
         user.save()
         .then( () => res.status(200).json({message: "Utilisateur crée !"}))
-        .catch(error => res.status(400).json({ error }));
+        .catch(error => res.status(400).json({ error }))
     })
-    .catch(error => res.status(500).json({ error }));
+    .catch(error => res.status(500).json({ error }))
+}
 
-};
 
+//  Login user
+//      search for user email in database
+//      if not found display error
+//      if found use bcrypt to compare data password and user password
+//      if valid, send userid and token
+//      catch error
 exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
         .then(user => {
@@ -33,7 +48,7 @@ exports.login = (req, res, next) => {
                         userId: user._id,
                         token: jwt.sign(
                             { userId: user._id },
-                            'RANDOM_TOKEN_SECRET',
+                            process.env.TOKEN,
                             { expiresIn: '24h' }
                         )
                     })
